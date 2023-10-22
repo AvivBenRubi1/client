@@ -11,7 +11,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
 });
 
-function MapMarker() {
+function DynamicMarker() {
   //const MapMarker = ({markerPos, socket}: {markerPos: Coordinate, socket: Socket}) => {
   //const markerRef: MutableRefObject<any> = useRef(null);
 
@@ -61,4 +61,4 @@ function MapMarker() {
   return null;
 }
 
-export default MapMarker;
+export default DynamicMarker;
