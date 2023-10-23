@@ -3,6 +3,8 @@ import L from "leaflet";
 import { Marker, Popup, useMapEvents } from "react-leaflet";
 import { Socket } from "socket.io-client";
 
+import droneImage from './images/drone.png';
+
 import Coordinate from "../../../interfaces/Coordinate";
 
 L.Icon.Default.mergeOptions({
@@ -30,8 +32,8 @@ function DynamicMarker() {
   // })
 
   var myIcon = L.icon({
-    iconUrl: "https://cdn-icons-png.flaticon.com/512/786/786912.png",
-    iconSize: [70, 70], // size of the icon
+    iconUrl: droneImage,
+    iconSize: [50, 50], // size of the icon
   });
 
   const map = useMapEvents({
