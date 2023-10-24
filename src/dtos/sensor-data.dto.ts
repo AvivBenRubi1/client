@@ -1,4 +1,4 @@
-export default interface DroneData {
+export default interface SensorData {
   pkt_len: number;
   unk: number;
   version: number;
