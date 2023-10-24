@@ -1,21 +1,44 @@
 import { MutableRefObject, useEffect, useMemo, useRef } from "react";
 import L, { LatLng, Map, icon } from "leaflet";
 import { Marker, Popup, useMapEvents } from "react-leaflet";
-import DroneData from "../../../dtos/drone-data.dto";
+import DroneData from "../../dtos/drone-data.dto";
 
-function DynamicMarker(image: string, droneData: DroneData, map: Map | null) {
-  const markerIcon = L.icon({
-    iconUrl: image,
-    iconSize: [30, 30], // size of the icon
-  });
+export default class DynamicMarker {
+  private readonly marker: L.Marker;
 
-  const marker: L.Marker = L.marker(
-    new L.LatLng(droneData.latitude, droneData.longitude),
-    { icon: markerIcon },);
+  constructor(
+    private readonly image: string,
+    private droneData: DroneData,
+    private readonly map: Map | null
+  ) {
+    const markerIcon = L.icon({
+      iconUrl: image,
+      iconSize: [30, 30], // size of the icon
+    });
 
-  if(map != null) {
-    marker.addTo(map)
+    const position = new L.LatLng(droneData.latitude, droneData.longitude);
+    this.marker = new L.Marker(position, { icon: markerIcon })
+      .bindPopup(this.getDroneDetails())
+
+    if (map != null) {
+      this.marker.addTo(map)
     }
+  }
+
+  updateDroneData(droneData: DroneData) {
+    this.droneData = droneData;
+    const position = new L.LatLng(droneData.latitude, droneData.longitude);
+    this.marker.setLatLng(position);
+    this.marker.bindPopup(this.getDroneDetails());
+  }
+
+  getDroneDetails(): string {
+    return `Serial Number: ${this.droneData.serial_number}
+    Latitude: ${this.droneData.latitude}
+    Longitude: ${this.droneData.longitude}
+    Drone Type: ${this.droneData.device_type}`;
+  }
+
   // const markerElement = (
   //   <Marker
   //     icon={markerIcon}
@@ -39,7 +62,6 @@ function DynamicMarker(image: string, droneData: DroneData, map: Map | null) {
   //   changeLocation(droneData.latitude, droneData.longitude);
   // }, 2000);
 
-  return null;
 
   // const map = useMapEvents({
   //   click: (e) => {
@@ -64,4 +86,3 @@ function DynamicMarker(image: string, droneData: DroneData, map: Map | null) {
   // });
 }
 
-export default DynamicMarker;
