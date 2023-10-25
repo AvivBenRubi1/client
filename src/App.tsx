@@ -16,11 +16,13 @@ import { Map as LeafletMap } from "leaflet";
 function App() {
   const [leafletMap, setLeafletMap] = useState<LeafletMap | null>(null);
   let mapManager: MapManager;
+
   useEffect(() => {
-    if(leafletMap)
-        mapManager = new MapManager(leafletMap);
-    socket.on("drone-data", (sensorData: SensorData) => {
-      if(!mapManager) {
+    if (leafletMap) {
+      mapManager = new MapManager(leafletMap);
+    }
+    socket.on("sensor_data", (sensorData: SensorData) => {
+      if (!mapManager) {
         return;
       }
       const droneData = DroneData.TryCreateDroneData(sensorData);

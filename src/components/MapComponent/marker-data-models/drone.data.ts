@@ -24,6 +24,7 @@ export default class DroneData implements MarkerData {
   }
 
   getDetails(): string {
-    return `all details`;
+    return `Lat:${this.latitude}, Long:${this.latitude},
+     Type:${this.device_type}, Serial:${this.serial_number},`;
   }
 }
