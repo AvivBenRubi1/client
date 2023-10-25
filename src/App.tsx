@@ -1,13 +1,21 @@
 import React, { useEffect } from "react";
-import logo from "./logo.svg";
 import "./App.css";
-
+import { Grid } from "@mui/material";
 import MapComponent from "./components/MapComponent";
+import Frame from "./components/MapComponent/DataComponent/frame";
 
 function App() {
+  
+
   return (
     <div className="App">
-      <MapComponent />
+
+      <Grid container direction={"row"}>
+        <Grid item xs={3}><Frame /></Grid>
+        <Grid item xs={8}><MapComponent /></Grid>
+
+
+      </Grid>
     </div>
   );
 }
