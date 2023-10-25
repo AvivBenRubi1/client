@@ -8,16 +8,19 @@ export default class DroneData implements MarkerData {
   serial_number: string;
   device_type: string;
 
-  constructor(sensorData: SensorData) {
+  private constructor(sensorData: SensorData) {
+    this.serial_number = sensorData.serial_number;
     this.latitude = sensorData.latitude;
     this.longitude = sensorData.longitude;
     this.altitude = sensorData.altitude;
-    this.serial_number = sensorData.serial_number;
     this.device_type = sensorData.device_type;
   }
 
-  static isValid(sensorData: SensorData): boolean {
-    return sensorData.latitude != 0 && sensorData.longitude != 0;
+  static TryCreateDroneData(sensorData: SensorData):DroneData | null {
+    if(!sensorData.latitude || sensorData.latitude === 0 || sensorData.longitude === 0) {
+      return null;
+    }
+    return new DroneData(sensorData);
   }
 
   getDetails(): string {

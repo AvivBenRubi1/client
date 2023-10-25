@@ -3,13 +3,13 @@ import L, { LatLng, Map, icon } from "leaflet";
 import { Marker, Popup, useMapEvents } from "react-leaflet";
 import MarkerData from "../interfaces/marker-data.interface";
 
-export default class DynamicMarker {
+export default class DynamicMarker<T extends MarkerData> {
   private readonly marker: L.Marker;
 
   constructor(
     private readonly image: string,
-    private markerData: MarkerData,
     private readonly map: Map | null,
+    private markerData: T,
   ) {
     const markerIcon = L.icon({
       iconUrl: image,
@@ -17,15 +17,13 @@ export default class DynamicMarker {
     });
 
     const position = new L.LatLng(markerData.latitude, markerData.longitude);
-    this.marker = new L.Marker(position, { icon: markerIcon })
-      .bindPopup(markerData.getDetails())
-
-    if (map != null) {
-      this.marker.addTo(map)
-    }
+    this.marker = new L.Marker(position, { icon: markerIcon }).bindPopup(
+      markerData.getDetails()
+    );
+    map?.addLayer(this.marker);
   }
 
-  updateMarkerData(markerData: MarkerData) {
+  updateMarkerData(markerData: T) {
     const position = new L.LatLng(markerData.latitude, markerData.longitude);
     this.marker.setLatLng(position);
     this.marker.bindPopup(markerData.getDetails());
@@ -53,7 +51,6 @@ export default class DynamicMarker {
   //   </Marker>
   // );
 
-
   // function changeLocation(lat: number, long: number) {
   //   console.log(`got new coordinate: lat:${lat} long:${long}`);
   //   marker.setLatLng(new L.LatLng(lat, long));
@@ -64,7 +61,6 @@ export default class DynamicMarker {
   //   droneData.longitude += 0.002;
   //   changeLocation(droneData.latitude, droneData.longitude);
   // }, 2000);
-
 
   // const map = useMapEvents({
   //   click: (e) => {
@@ -88,4 +84,3 @@ export default class DynamicMarker {
   //   shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
   // });
 }
-

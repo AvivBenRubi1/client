@@ -6,11 +6,19 @@ export default class ControllerData implements MarkerData {
   latitude: number;
   serial_number: string;
 
-  constructor(droneData: SensorData) {
-    this.latitude = droneData.app_lat;
-    this.longitude = droneData.app_lon;
-    this.serial_number = droneData.serial_number;
+  private constructor(sensorData: SensorData) {
+    this.latitude = sensorData.app_lat;
+    this.longitude = sensorData.app_lon;
+    this.serial_number = sensorData.serial_number;
   }
+
+  static TryCreateControllerData(sensorData: SensorData): ControllerData | null {
+    if(!sensorData.app_lat || sensorData.app_lat === 0 || sensorData.app_lon === 0) {
+      return null;
+    }
+      return new ControllerData(sensorData)
+  }
+
 
   getDetails(): string {
     return `all details`

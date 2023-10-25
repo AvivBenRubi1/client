@@ -1,26 +1,28 @@
-export default interface SensorData {
-  pkt_len: number;
-  unk: number;
-  version: number;
-  sequence_number: number;
-  state_info: number;
-  serial_number: string;
-  longitude: number;
-  latitude: number;
-  altitude: number;
-  height: number;
-  v_north: number;
-  v_east: number;
-  v_up: number;
-  d_1_angle: number;
-  gps_time: number;
-  app_lat: number;
-  app_lon: number;
-  longitude_home: number;
-  latitude_home: number;
-  device_type: string;
-  uuid_len: number;
-  uuid: string;
-  crc_packet: string;
-  crc_calculated: string;
+export default class SensorData {
+  constructor(
+    pkt_len: number,
+    public unk: number,
+    public version: number,
+    public sequence_number: number,
+    public state_info: number,
+    public serial_number: string,
+    public longitude: number,
+    public latitude: number,
+    public altitude: number,
+    public height: number,
+    public v_north: number,
+    public v_east: number,
+    public v_up: number,
+    public d_1_angle: number,
+    public gps_time: number,
+    public app_lat: number,
+    public app_lon: number,
+    public longitude_home: number,
+    public latitude_home: number,
+    public device_type: string,
+    public uuid_len: number,
+    public uuid: string,
+    public crc_packet: string,
+    public crc_calculated: string
+  ) {}
 }
