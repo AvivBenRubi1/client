@@ -7,65 +7,69 @@ import HomeData from "../marker-data-models/home.data";
 
 import droneImage from "../../../images/red_drone.png";
 import controllerImage from "../../../images/controller.png";
-import homeImage from "../../../images/home.png"
+import homeImage from "../../../images/home.png";
 
 export default class MarkersCollection {
-
   private droneMarker?: DynamicMarker<DroneData>;
   private controllerMarker?: DynamicMarker<ControllerData>;
   private homeMarker?: DynamicMarker<HomeData>;
 
   private readonly map: L.Map;
 
-  constructor(sensorData: SensorData, map: L.Map) {
+  constructor(
+    map: L.Map,
+    droneData?: DroneData,
+    controllerData?: ControllerData,
+    homeData?: HomeData
+  ) {
     this.map = map;
 
-    const droneData = DroneData.TryCreateDroneData(sensorData);
-    const controllerData = ControllerData.TryCreateControllerData(sensorData);
-    const homeData = HomeData.TryCreateHomeData(sensorData);
+    if (droneData)
+      this.droneMarker = new DynamicMarker(droneImage, map, droneData);
 
-    if (droneData != null) {
-      this.droneMarker = new DynamicMarker(droneImage, map, droneData)
+    if (controllerData) {
+      this.controllerMarker = new DynamicMarker(
+        controllerImage,
+        map,
+        controllerData
+      );
     }
-  
-    if (controllerData != null) {
-      this.controllerMarker = new DynamicMarker(controllerImage, map, controllerData);
-    }
-    
-    if (homeData != null) {
+
+    if (homeData) {
       this.homeMarker = new DynamicMarker(homeImage, map, homeData);
     }
   }
 
-  updateMarkersData(sensorData: SensorData) {
-    const droneData = DroneData.TryCreateDroneData(sensorData);
-    const controllerData = ControllerData.TryCreateControllerData(sensorData);
-    const homeData = HomeData.TryCreateHomeData(sensorData);
-
-    if (droneData != null) {
-      if(this.droneMarker == null) {
+  updateMarkersData(
+    droneData?: DroneData,
+    controllerData?: ControllerData,
+    homeData?: HomeData
+  ) {
+    if (droneData) {
+      if (this.droneMarker) {
+        this.droneMarker.updateMarkerData(droneData);
+      } else {
         this.droneMarker = new DynamicMarker(droneImage, this.map, droneData);
       }
-      else {
-        this.droneMarker.updateMarkerData(droneData);
+    }
+
+    if (controllerData) {
+      if (this.controllerMarker) {
+        this.controllerMarker.updateMarkerData(controllerData);
+      } else {
+        this.controllerMarker = new DynamicMarker(
+          controllerImage,
+          this.map,
+          controllerData
+        );
       }
     }
-  
-    if (controllerData != null) {
-      if(this.controllerMarker == null) {
-        this.controllerMarker = new DynamicMarker(controllerImage, this.map, controllerData);
-      }
-      else {
-        this.controllerMarker.updateMarkerData(controllerData)
-      }
-    }
-    
-    if (homeData != null) {
-      if(this.homeMarker == null) {
-        this.homeMarker = new DynamicMarker(homeImage, this.map, homeData);
-      }
-      else {
+
+    if (homeData) {
+      if (this.homeMarker) {
         this.homeMarker.updateMarkerData(homeData);
+      } else {
+        this.homeMarker = new DynamicMarker(homeImage, this.map, homeData);
       }
     }
   }
@@ -75,5 +79,4 @@ export default class MarkersCollection {
     this.homeMarker?.dispose();
     this.controllerMarker?.dispose();
   }
-
 }

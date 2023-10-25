@@ -12,9 +12,9 @@ export default class ControllerData implements MarkerData {
     this.serial_number = sensorData.serial_number;
   }
 
-  static TryCreateControllerData(sensorData: SensorData): ControllerData | null {
+  static TryCreateControllerData(sensorData: SensorData): ControllerData | undefined {
     if(!sensorData.app_lat || sensorData.app_lat === 0 || sensorData.app_lon === 0) {
-      return null;
+      return;
     }
       return new ControllerData(sensorData)
   }

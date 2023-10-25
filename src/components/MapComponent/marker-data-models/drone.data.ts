@@ -16,9 +16,9 @@ export default class DroneData implements MarkerData {
     this.device_type = sensorData.device_type;
   }
 
-  static TryCreateDroneData(sensorData: SensorData):DroneData | null {
+  static TryCreateDroneData(sensorData: SensorData):DroneData | undefined {
     if(!sensorData.latitude || sensorData.latitude === 0 || sensorData.longitude === 0) {
-      return null;
+      return;
     }
     return new DroneData(sensorData);
   }
