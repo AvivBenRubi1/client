@@ -1,38 +1,51 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import "./App.css";
-import "./components/MapComponent/Map.css";
+import "./components/BaseMap/Map.css";
 import "leaflet/dist/leaflet.css";
 import { Grid } from "@mui/material";
 import { socket } from "./socket";
 import SensorData from "./dtos/sensor-data.dto";
-import DroneData from "./components/MapComponent/marker-data-models/drone.data";
-import ControllerData from "./components/MapComponent/marker-data-models/controller.data";
-import HomeData from "./components/MapComponent/marker-data-models/home.data";
-import MapManager from "./components/MapComponent/map-manager";
-import { MapContainer, TileLayer } from "react-leaflet";
+import DroneData from "./models/drone.model";
+import ControllerData from "./models/controller.model";
+import HomeData from "./models/home.model";
 import { Map as LeafletMap } from "leaflet";
+import BaseMap from "./components/BaseMap";
+import MarkersManager from "./components/BaseMap/markersManager";
+
+import DroneImage from "./images/red_drone.png";
+import HomeImage from "./images/home.png";
+import ControllerImage from "./images/controller.png";
 import Frame from "./components/MapComponent/DataComponent/frame";
 
 function App() {
   const [leafletMap, setLeafletMap] = useState<LeafletMap | null>(null);
   const [position, setPosition] = useState<[number, number] | undefined>();
-  let mapManager: MapManager;
 
   useEffect(() => {
-    if (leafletMap) {
-      mapManager = new MapManager(leafletMap);
-      setPosition([31.681579, 35.007935])
+
+    if (!leafletMap) {
+      return;
     }
-    socket.on("sensor_data", (sensorData: SensorData) => {
-      if (!mapManager) {
-        return;
-      }
-      const droneData = DroneData.TryCreateDroneData(sensorData);
-      const controllerData = ControllerData.TryCreateControllerData(sensorData);
-      const homeData = HomeData.TryCreateHomeData(sensorData);
-      mapManager.updateMap(droneData, controllerData, homeData)
+
+    let dronesManager = new MarkersManager<DroneData>(leafletMap, DroneImage);
+    let homesManager = new MarkersManager<HomeData>(leafletMap, HomeImage);
+    let controllersManager = new MarkersManager<ControllerData>(leafletMap, ControllerImage);
+
+    socket.on("dji_telemetry", (sensorData: SensorData) => {
+      let droneData = new DroneData(sensorData);
+      droneData.latitude = 31.960540;
+      droneData.longitude = 34.836381;
+      dronesManager.setMarkerData(droneData);
+
+      let homeData = new HomeData(sensorData);
+      homeData.latitude = 31.959365;
+      homeData.longitude = 34.835887;
+      homesManager.setMarkerData(homeData);
+
+      controllersManager.setMarkerData(new ControllerData(sensorData))
     });
+
   });
 
   type Data = {
@@ -65,14 +78,8 @@ function App() {
         <Grid item xs={3}>
           <Frame newData={newData} setPosition={handleClick} />
         </Grid>
-        <Grid item xs={9} className="map-wrapper" style={{left:"26rem"}}>
-          <MapContainer
-            center={[31.681579, 35.007935]}
-            zoom={8}
-            className="map"
-            ref={setLeafletMap} >
-            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-          </MapContainer>
+        <Grid item xs={9} style={{left:"26rem"}}>
+        <BaseMap setLeafletMap={setLeafletMap} />
         </Grid>
 
       </Grid>
