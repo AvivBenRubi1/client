@@ -1,6 +1,5 @@
 
 import React, { useEffect, useRef, useState } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import "./components/MapComponent/Map.css";
 import "leaflet/dist/leaflet.css";
@@ -17,11 +16,13 @@ import Frame from "./components/MapComponent/DataComponent/frame";
 
 function App() {
   const [leafletMap, setLeafletMap] = useState<LeafletMap | null>(null);
+  const [position, setPosition] = useState<[number, number] | undefined>();
   let mapManager: MapManager;
 
   useEffect(() => {
     if (leafletMap) {
       mapManager = new MapManager(leafletMap);
+      setPosition([31.681579, 35.007935])
     }
     socket.on("sensor_data", (sensorData: SensorData) => {
       if (!mapManager) {
@@ -40,57 +41,41 @@ function App() {
     altitude: any,
     serial_number: any,
     device_type: any
-};
+  };
 
-const newData: Data[] = [
+  const newData: Data[] = [
     {
-        longitude:108,
-        latitude: 55,
-        altitude: 55,
-        serial_number: 55,
-        device_type:55
-    },
-    {
-        longitude:55555,
-        latitude: 55,
-        altitude: 55,
-        serial_number: 55,
-        device_type:55
-    },
-    {
-        longitude:55,
-        latitude: 55,
-        altitude: 55,
-        serial_number: 55,
-        device_type:55
-    },
-    {
-        longitude:55,
-        latitude: 55,
-        altitude: 55,
-        serial_number: 55,
-        device_type:55
+      longitude: 31.681579,
+      latitude: 35.007935,
+      altitude: 35.007935,
+      serial_number: 55,
+      device_type: 55
     }
-]
+  ]
 
+  const handleClick = (longitude: number, altitude: number) => {
+    setPosition([longitude, altitude]);
+    console.log("App", [longitude, altitude])
+    //mapManager.setView(position, 8)
+  };
 
   return (
     <div className="App">
-      <div className="map-wrapper">
-        <MapContainer
-          center={[31.681579, 35.007935]}
-          zoom={8}
-          className="map"
-          ref={setLeafletMap} >
-          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        </MapContainer>
-      </div>
-      {/* <Grid container direction={"row"}>
-        <Grid item xs={3}><Frame newData={newData} /></Grid>
-        <Grid item xs={8}><MapComponent /></Grid>
+      <Grid container direction={"row"}>
+        <Grid item xs={3}>
+          <Frame newData={newData} setPosition={handleClick} />
+        </Grid>
+        <Grid item xs={9} className="map-wrapper" style={{left:"26rem"}}>
+          <MapContainer
+            center={[31.681579, 35.007935]}
+            zoom={8}
+            className="map"
+            ref={setLeafletMap} >
+            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+          </MapContainer>
+        </Grid>
 
-        
-      </Grid> */}
+      </Grid>
     </div>
   );
 }
