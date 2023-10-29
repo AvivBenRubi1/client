@@ -1,7 +1,6 @@
 import { Map as LeafletMap } from "leaflet";
 import DynamicMarker from "./dynamicMarker";
-import MarkerData from "../../interfaces/marker-data.interface";
-
+import MarkerData from "../../../interfaces/marker-data.interface";
 
 export default class MarkersManager<T extends MarkerData> {
   private readonly leafletMap: LeafletMap;
@@ -15,10 +14,12 @@ export default class MarkersManager<T extends MarkerData> {
   }
 
   setMarkerData(markerData: T) {
-    if(markerData.latitude === 0 || markerData.longitude === 0) {
+    if (!markerData?.latitude || markerData.latitude === 0 || markerData.longitude === 0) {
       return;
     }
+
     let dynamicMarker = this.serialMarkerMap.get(markerData.serial_number);
+
     if (dynamicMarker === undefined) {
       let marker = new DynamicMarker<T>(
         this.leafletMap,

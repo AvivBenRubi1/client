@@ -1,7 +1,7 @@
 import { MutableRefObject, useEffect, useMemo, useRef } from "react";
 import L, { LatLng, Map, icon } from "leaflet";
 import { Marker, Popup, useMapEvents } from "react-leaflet";
-import MarkerData from "../../interfaces/marker-data.interface";
+import MarkerData from "../../../interfaces/marker-data.interface";
 
 export default class DynamicMarker<T extends MarkerData> {
   private static DEFAULT_ICON_SIZE = 40;
