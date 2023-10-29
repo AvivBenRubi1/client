@@ -14,14 +14,14 @@ export default class HomeData implements MarkerData {
     this.device_type = sensorData.device_type;
   }
 
-  static TryCreateHomeData(sensorData: SensorData): HomeData | null {
+  static TryCreateHomeData(sensorData: SensorData): HomeData | undefined {
     if(!sensorData.latitude_home || sensorData.latitude_home === 0 || sensorData.longitude_home === 0) {
-      return null
+      return;
     }
     return new HomeData(sensorData);
   }
 
   getDetails(): string {
-    return `all details`
+    return `Lat:${this.latitude}, Long:${this.latitude}, Serial:${this.serial_number},`
   }
 }
