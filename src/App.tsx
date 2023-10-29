@@ -21,7 +21,7 @@ import Frame from "./components/MapComponent/DataComponent/frame";
 function App() {
   const [leafletMap, setLeafletMap] = useState<LeafletMap | null>(null);
   const [position, setPosition] = useState<[number, number] | undefined>();
-
+  const [DroneData, setDronedata] = useState<any>();
   useEffect(() => {
 
     if (!leafletMap) {
@@ -34,6 +34,7 @@ function App() {
 
     socket.on("dji_telemetry", (sensorData: SensorData) => {
       let droneData = new DroneData(sensorData);
+      setDronedata(droneData);
       dronesManager.setMarkerData(droneData);
       homesManager.setMarkerData(new HomeData(sensorData));
       controllersManager.setMarkerData(new ControllerData(sensorData))
@@ -70,7 +71,7 @@ function App() {
     <div className="App">
       <Grid container direction={"row"}>
         <Grid item xs={3}>
-          <Frame newData={newData} setPosition={handleClick} />
+          <Frame newData={DroneData} setPosition={handleClick} />
         </Grid>
         <Grid item xs={9} style={{left:"26rem"}}>
         <BaseMap setLeafletMap={setLeafletMap} />
