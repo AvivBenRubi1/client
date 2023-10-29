@@ -34,15 +34,8 @@ function App() {
 
     socket.on("dji_telemetry", (sensorData: SensorData) => {
       let droneData = new DroneData(sensorData);
-      droneData.latitude = 31.960540;
-      droneData.longitude = 34.836381;
       dronesManager.setMarkerData(droneData);
-
-      let homeData = new HomeData(sensorData);
-      homeData.latitude = 31.959365;
-      homeData.longitude = 34.835887;
-      homesManager.setMarkerData(homeData);
-
+      homesManager.setMarkerData(new HomeData(sensorData));
       controllersManager.setMarkerData(new ControllerData(sensorData))
     });
 
@@ -69,6 +62,7 @@ function App() {
   const handleClick = (longitude: number, altitude: number) => {
     setPosition([longitude, altitude]);
     console.log("App", [longitude, altitude])
+    leafletMap?.setView([longitude, altitude],13);
     //mapManager.setView(position, 8)
   };
 
@@ -78,11 +72,9 @@ function App() {
         <Grid item xs={3}>
           <Frame newData={newData} setPosition={handleClick} />
         </Grid>
-        <Grid item xs={8} >
-
+        <Grid item xs={9} style={{left:"26rem"}}>
         <BaseMap setLeafletMap={setLeafletMap} />
         </Grid>
-
       </Grid>
     </div>
   );
