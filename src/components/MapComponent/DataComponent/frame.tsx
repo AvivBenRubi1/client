@@ -27,10 +27,10 @@ function Frame(props: FrameProps) {
     } = props;
 
     return (
-        <Grid spacing={2}>
+        <div style={{overflow:"hidden"}}>
             <img src={logo108} alt="108" style={{ margin: "0.5rem", height: "5vw" }} />
 
-            <Grid style={{ display: "flex", margin: "2vw" }} direction="column">
+            <Grid style={{ display: "flex", margin: "2vw", overflowX:"auto" }} direction="column">
                 {props.newData && props.newData.map((line) => (
                     <Card style={{ backgroundColor: "#80808057", marginBottom: "3vw", padding: "0.9rem", maxHeight: "10vw", overflowY: "auto" }}>
                         <Grid container spacing={3} direction="row">
@@ -59,7 +59,7 @@ function Frame(props: FrameProps) {
                 ))}
 
 
-            </Grid ></Grid>)
+           </Grid> </div>)
 }
 
 export default Frame;

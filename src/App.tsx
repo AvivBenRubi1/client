@@ -53,7 +53,7 @@ function App() {
         <Grid item xs={3}><Frame newData={newData} /></Grid>
         <Grid item xs={8}><MapComponent /></Grid>
 
-
+        
       </Grid>
     </div>
   );
