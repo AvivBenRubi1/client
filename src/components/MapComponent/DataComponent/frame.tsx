@@ -26,7 +26,7 @@ return (
     <div>
         <img src={logo108} alt="108" style={{ margin: "0.5rem", height: "5vw" }} onClick={(e) => { console.log(props.newData) }} />
 
-        <Grid style={{ display: "flex", margin: "2vw", overflowX: "auto" }} direction="column">
+        <Grid container style={{ display: "flex", margin: "2vw", overflowX: "auto" }} direction="column">
             {props.newData && props.newData.map((line) => (
                 <Card key={line?.serial_number} style={{ backgroundColor: "#80808057", marginBottom: "3vw", padding: "0.9rem", maxHeight: "10vw", overflowY: "auto" }}
                     onClick={(e) => {

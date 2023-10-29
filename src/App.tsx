@@ -78,7 +78,8 @@ function App() {
         <Grid item xs={3}>
           <Frame newData={newData} setPosition={handleClick} />
         </Grid>
-        <Grid item xs={9} style={{left:"26rem"}}>
+        <Grid item xs={8} >
+
         <BaseMap setLeafletMap={setLeafletMap} />
         </Grid>
 
