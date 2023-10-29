@@ -28,7 +28,7 @@ return (
 
         <Grid style={{ display: "flex", margin: "2vw", overflowX: "auto" }} direction="column">
             {props.newData && props.newData.map((line) => (
-                <Card style={{ backgroundColor: "#80808057", marginBottom: "3vw", padding: "0.9rem", maxHeight: "10vw", overflowY: "auto" }}
+                <Card key={line?.serial_number} style={{ backgroundColor: "#80808057", marginBottom: "3vw", padding: "0.9rem", maxHeight: "10vw", overflowY: "auto" }}
                     onClick={(e) => {
                         setPosition(line?.longitude, line?.altitude);
                         //console.log([line?.longitude, line?.altitude])
