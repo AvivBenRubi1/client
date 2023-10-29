@@ -1,41 +1,52 @@
 import React, { useEffect, useRef, useState } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import "./components/BaseMap/Map.css";
 import "leaflet/dist/leaflet.css";
 
 import { socket } from "./socket";
 import SensorData from "./dtos/sensor-data.dto";
-import DroneData from "./components/BaseMap/marker-data-models/drone.data";
-import ControllerData from "./components/BaseMap/marker-data-models/controller.data";
-import HomeData from "./components/BaseMap/marker-data-models/home.data";
-import MapManager from "./components/BaseMap/map-manager";
-import { MapContainer, TileLayer } from "react-leaflet";
+import DroneData from "./models/drone.model";
+import ControllerData from "./models/controller.model";
+import HomeData from "./models/home.model";
 import { Map as LeafletMap } from "leaflet";
 import BaseMap from "./components/BaseMap";
+import MarkersManager from "./components/BaseMap/markersManager";
+
+import DroneImage from "./images/red_drone.png";
+import HomeImage from "./images/home.png";
+import ControllerImage from "./images/controller.png";
 
 function App() {
   const [leafletMap, setLeafletMap] = useState<LeafletMap | null>(null);
-  let mapManager: MapManager;
-
   useEffect(() => {
-    if (leafletMap) {
-      mapManager = new MapManager(leafletMap);
+
+    if (!leafletMap) {
+      return;
     }
-    socket.on("sensor_data", (sensorData: SensorData) => {
-      if (!mapManager) {
-        return;
-      }
-      const droneData = DroneData.TryCreateDroneData(sensorData);
-      const controllerData = ControllerData.TryCreateControllerData(sensorData);
-      const homeData = HomeData.TryCreateHomeData(sensorData);
-      mapManager.updateMap(droneData, controllerData, homeData)
+
+    let dronesManager = new MarkersManager<DroneData>(leafletMap, DroneImage);
+    let homesManager = new MarkersManager<HomeData>(leafletMap, HomeImage);
+    let controllersManager = new MarkersManager<ControllerData>(leafletMap, ControllerImage);
+
+    socket.on("dji_telemetry", (sensorData: SensorData) => {
+      let droneData = new DroneData(sensorData);
+      droneData.latitude = 31.960540;
+      droneData.longitude = 34.836381;
+      dronesManager.setMarkerData(droneData);
+
+      let homeData = new HomeData(sensorData);
+      homeData.latitude = 31.959365;
+      homeData.longitude = 34.835887;
+      homesManager.setMarkerData(homeData);
+
+      controllersManager.setMarkerData(new ControllerData(sensorData))
     });
+
   });
 
   return (
     <div className="App">
-      <BaseMap setLeafletMap={setLeafletMap}/>
+      <BaseMap setLeafletMap={setLeafletMap} />
     </div>
   );
 }
