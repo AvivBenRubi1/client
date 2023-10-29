@@ -7,6 +7,7 @@ function BaseMap({setLeafletMap}: any)  {
         <MapContainer
             center={[31.681579, 35.007935]}
             zoom={8}
+            maxZoom={18}
             className="map"
             ref={setLeafletMap} >
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
