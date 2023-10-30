@@ -14,12 +14,13 @@ function Frame({props}: {props:FrameProps}) {
       style={{
         backgroundColor: "#80808057",
         marginBottom: "3vw",
-        padding: "0.9rem",
+        padding: "0.5rem",
         maxHeight: "10vw",
         overflowY: "auto",
+        marginRight:"2vw"
       }}
       onClick={(e) => {
-       map.setView([droneData.latitude, droneData.latitude]);
+       map.setView([droneData.latitude, droneData.longitude], 15);
       }}
     >
       <Grid container spacing={3} direction="row">

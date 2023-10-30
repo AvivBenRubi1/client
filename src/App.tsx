@@ -39,10 +39,27 @@ function App() {
       ControllerImage
     );
 
-    socket.on("dji_telemetry", (sensorData: SensorData) => {
+    socket.on("dji_telemetry",  (sensorData: SensorData) => {
       let droneData = new DroneData(sensorData);
       let frame: FrameProps = { droneData: droneData, leafletMap: leafletMap };
+
       setFrames([...frames, frame]);
+      // if (frames.length === 0) {
+      // }
+      // else {
+
+      //   frames.filter(async (element, index, array) => {
+      //     if (array[index].droneData.serial_number === frame.droneData.serial_number) {
+      //       array[index].droneData.altitude = frame.droneData.altitude;
+      //       array[index].droneData.device_type = frame.droneData.device_type;
+      //       array[index].droneData.latitude = frame.droneData.latitude;
+      //       array[index].droneData.longitude = frame.droneData.longitude;
+      //     }
+      //     else if (index === array.length - 1) {
+      //       await setFrames([...frames, frame]);
+      //     }
+      //   });
+      // }
 
       dronesManager.setMarkerData(droneData);
       let homeData = new HomeData(sensorData);
@@ -60,7 +77,7 @@ function App() {
   return (
     <div className="App">
       <Grid container direction={"row"}>
-        <Grid item xs={1.5}>
+        <Grid item xs={3}>
           <SideBar frames={frames} />
         </Grid>
         <Grid item>
