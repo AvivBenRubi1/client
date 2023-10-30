@@ -27,7 +27,7 @@ export default class DynamicMarker<T extends MarkerData> {
       markerData.getDetails()
     );
 
-    map.addLayer(this.marker);
+   this.marker.addTo(map);
   }
 
   updateData(markerData: T) {

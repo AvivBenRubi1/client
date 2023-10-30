@@ -3,7 +3,7 @@ import { Grid, Card } from "@mui/material";
 import FramesList from "./FramesList";
 import FrameProps from "../../interfaces/frame-props.interface";
 
-export default function SideBar({ frames }: { frames: Array<FrameProps> }) {
+export default function SideBar() {
   return (
     <div>
       <Grid container style={{ display: "flex" }} direction="column">
@@ -12,7 +12,7 @@ export default function SideBar({ frames }: { frames: Array<FrameProps> }) {
           alt="108"
           style={{ height: "5vw", width: "5vw", alignSelf: "center" }}
         />
-        <FramesList frames={frames} />
+        {/* <FramesList frames={frames} /> */}
       </Grid>
     </div>
   );

@@ -25,8 +25,7 @@ import FrameProps from "./interfaces/frame-props.interface";
 
 function App() {
   const [leafletMap, setLeafletMap] = useState<LeafletMap | null>(null);
-  const [frames, setFrames] = useState<Array<FrameProps>>([]);
-
+  
   useEffect(() => {
     if (!leafletMap) {
       return;
@@ -41,8 +40,8 @@ function App() {
 
     socket.on("dji_telemetry", (sensorData: SensorData) => {
       let droneData = new DroneData(sensorData);
-      let frame: FrameProps = { droneData: droneData, leafletMap: leafletMap };
-      setFrames([...frames, frame]);
+      // let frame: FrameProps = { droneData: droneData, leafletMap: leafletMap };
+      // setFrames([...frames, frame]);
 
       dronesManager.setMarkerData(droneData);
       let homeData = new HomeData(sensorData);
@@ -61,7 +60,7 @@ function App() {
     <div className="App">
       <Grid container direction={"row"}>
         <Grid item xs={1.5}>
-          <SideBar frames={frames} />
+          <SideBar/>
         </Grid>
         <Grid item>
           <BaseMap setLeafletMap={setLeafletMap} />
