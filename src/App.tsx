@@ -1,12 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import "./App.css";
 import "./components/BaseMap/index.css";
 import "leaflet/dist/leaflet.css";
 
 import { Grid } from "@mui/material";
-import { red } from "@mui/material/colors";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-
 import { socket } from "./socket";
 import SensorData from "./dtos/sensor-data.dto";
 import DroneData from "./models/drone.model";
@@ -19,13 +16,15 @@ import MarkersManager from "./components/BaseMap/MarkerManagement/markersManager
 import DroneImage from "./assets/images/red_drone.png";
 import HomeImage from "./assets/images/home.png";
 import ControllerImage from "./assets/images/controller.png";
-import Frame from "./components/SideBar/FramesList/frame";
 import SideBar from "./components/SideBar";
-import FrameProps from "./interfaces/frame-props.interface";
+import { droneFrame } from "./models/drone.model";
+import { reducer } from "./droneReducer";
 
 function App() {
   const [leafletMap, setLeafletMap] = useState<LeafletMap | null>(null);
-  const [frames, setFrames] = useState<Array<FrameProps>>([]);
+  const [dataFrame, setDataFrame] = useState<droneFrame>({drones:[], map:leafletMap});
+  const [state, dispatch] = useReducer(reducer,{drones:[], map:leafletMap});
+
 
   useEffect(() => {
     if (!leafletMap) {
@@ -41,26 +40,8 @@ function App() {
 
     socket.on("dji_telemetry",  (sensorData: SensorData) => {
       let droneData = new DroneData(sensorData);
-      let frame: FrameProps = { droneData: droneData, leafletMap: leafletMap };
-
-      setFrames([...frames, frame]);
-      // if (frames.length === 0) {
-      // }
-      // else {
-
-      //   frames.filter(async (element, index, array) => {
-      //     if (array[index].droneData.serial_number === frame.droneData.serial_number) {
-      //       array[index].droneData.altitude = frame.droneData.altitude;
-      //       array[index].droneData.device_type = frame.droneData.device_type;
-      //       array[index].droneData.latitude = frame.droneData.latitude;
-      //       array[index].droneData.longitude = frame.droneData.longitude;
-      //     }
-      //     else if (index === array.length - 1) {
-      //       await setFrames([...frames, frame]);
-      //     }
-      //   });
-      // }
-
+      dispatch({data:droneData, map:leafletMap});
+      setDataFrame({drones:[droneData], map:leafletMap})
       dronesManager.setMarkerData(droneData);
       let homeData = new HomeData(sensorData);
       homesManager.setMarkerData(homeData);
@@ -77,8 +58,8 @@ function App() {
   return (
     <div className="App">
       <Grid container direction={"row"}>
-        <Grid item xs={3}>
-          <SideBar frames={frames} />
+        <Grid item xs={3} style={{overflow:"hidden"}}>
+          <SideBar frames={state} />
         </Grid>
         <Grid item>
           <BaseMap setLeafletMap={setLeafletMap} />

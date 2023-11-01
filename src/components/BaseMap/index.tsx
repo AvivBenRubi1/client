@@ -5,8 +5,8 @@ function BaseMap({setLeafletMap}: any)  {
 
     return (<div className="map-wrapper">
         <MapContainer
-            center={[31.681579, 35.007935]}
-            zoom={9}
+            center={[32.2686,35.5846]}
+            zoom={8}
             maxZoom={18}
             className="map"
             ref={setLeafletMap} >
