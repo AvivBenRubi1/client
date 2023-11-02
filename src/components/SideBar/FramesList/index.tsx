@@ -10,8 +10,9 @@ export default function FramesList({ frames }: { frames: droneFrame }) {
     <Grid container style={{ display: "flex" }} direction="column">
       <List
         sx={{
-          width: '100%', maxWidth: 360, bgcolor: 'background.paper'}}
-          style={{overflowY: "auto", overflowX: "hidden"}}
+          width: '100%', maxWidth: 360, bgcolor: 'background.paper'
+        }}
+        style={{ overflowY: "auto", overflowX: "hidden" }}
         aria-label="contacts"
       >
         {frames.drones.map((frame) => (

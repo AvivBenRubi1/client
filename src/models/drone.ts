@@ -1,5 +1,8 @@
+import MarkersManager from "../components/BaseMap/MarkerManagement/markersManager";
 import Telemetry from "../dtos/telemetry";
 import MarkerData from "../interfaces/markerData";
+import ControllerData from "./controller";
+import HomeData from "./home";
 
 export default class DroneData implements MarkerData {
   longitude: number;
@@ -22,7 +25,9 @@ export default class DroneData implements MarkerData {
   }
 }
 
-export interface droneFrame {
-  drones: Array<DroneData>;
-  map: any;
+export type droneFrame = {
+  drones: Array<DroneData>,
+  home:Array<HomeData>,
+  controller:Array<ControllerData>,
+  map: any,
 }

@@ -3,6 +3,7 @@ import { Grid, Card } from "@mui/material";
 import FramesList from "./FramesList";
 import { droneFrame } from "../../models/drone";
 
+type SideBarProps = { frames: droneFrame,  }
 export default function SideBar({ frames }: { frames: droneFrame }) {
   
   return (

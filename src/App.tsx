@@ -19,11 +19,15 @@ import ControllerImage from "./assets/images/controller.png";
 import SideBar from "./components/SideBar";
 import { droneFrame } from "./models/drone";
 import { reducer } from "./reducers/droneReducer";
+import { log } from "console";
 
 function App() {
   const [leafletMap, setLeafletMap] = useState<LeafletMap | null>(null);
-  const [dataFrame, setDataFrame] = useState<droneFrame>({drones:[], map:leafletMap});
-  const [state, dispatch] = useReducer(reducer,{drones:[], map:leafletMap});
+  // const [dataFrame, setDataFrame] = useState<droneFrame>({drones:[], map:leafletMap});
+  const [dronesManager, setDronesManager] = useState<MarkersManager<DroneData>>();
+  const [homesManager, setHomesManager] = useState<MarkersManager<HomeData>>();
+  const [controllersManager, setControllersManager] = useState<MarkersManager<ControllerData>>();
+  const [state, dispatch] = useReducer(reducer,{drones:[],home:[], controller:[], map:leafletMap});
 
 
   useEffect(() => {
@@ -31,23 +35,36 @@ function App() {
       return;
     }
 
-    let dronesManager = new MarkersManager<DroneData>(leafletMap, DroneImage);
-    let homesManager = new MarkersManager<HomeData>(leafletMap, HomeImage);
-    let controllersManager = new MarkersManager<ControllerData>(
+    setDronesManager(new MarkersManager<DroneData>(leafletMap, DroneImage))
+    setHomesManager(new MarkersManager<DroneData>(leafletMap, DroneImage))
+    setControllersManager(new MarkersManager<ControllerData>(
       leafletMap,
       ControllerImage
-    );
+    ))
+  }, [leafletMap]);
 
-    socket.on("dji_telemetry",  (sensorData: Telemetry) => {
+  useEffect(() => {
+    if(!(dronesManager && homesManager && controllersManager)) return
+
+
+    const func = (sensorData: Telemetry) => {
       let droneData = new DroneData(sensorData);
-      dispatch({data:droneData, map:leafletMap});
-      setDataFrame({drones:[droneData], map:leafletMap})
       dronesManager.setMarkerData(droneData);
       let homeData = new HomeData(sensorData);
       homesManager.setMarkerData(homeData);
       controllersManager.setMarkerData(new ControllerData(sensorData));
-    });
-  });
+      // console.log(droneData, homeData,new ControllerData(sensorData) );
+      
+      dispatch({data:droneData,home:homeData, controler:new ControllerData(sensorData), map:leafletMap});
+      // setDataFrame({drones:[droneData], map:leafletMap})
+    }
+
+    socket.on("dji_telemetry", func);
+
+    return () => {
+      socket.off("dji_telemetry", func)
+    }
+  }, [dronesManager, homesManager, controllersManager])
 
   // const darkTheme = createTheme({
   //   palette: {

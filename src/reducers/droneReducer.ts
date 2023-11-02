@@ -7,6 +7,7 @@ export const reducer = (state: droneFrame, action: any): droneFrame => {
   } else {
     let flag = false;
     state.drones.forEach((element) => {
+      
       if (element.serial_number == action.data.serial_number) {
         element.altitude = action.data.altitude;
         element.device_type = action.data.device_type;
