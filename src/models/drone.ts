@@ -20,14 +20,15 @@ export default class DroneData implements MarkerData {
   }
 
   getDetails(): string {
-    return `Lat:${this.latitude}, Long:${this.latitude},
-    Type:${this.device_type}, Serial:${this.serial_number},`;
+    return `Lat: ${this.latitude}, Long: ${this.latitude},
+    Type: ${this.device_type}, Serial: ${this.serial_number},`;
   }
+  
 }
 
 export type droneFrame = {
   drones: Array<DroneData>,
-  home:Array<HomeData>,
-  controller:Array<ControllerData>,
+  // home:Array<HomeData>,
+  // controller:Array<ControllerData>,
   map: any,
 }

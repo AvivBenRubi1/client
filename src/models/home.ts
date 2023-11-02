@@ -15,6 +15,6 @@ export default class HomeData implements MarkerData {
   }
 
   getDetails(): string {
-    return `Lat:${this.latitude}, Long:${this.latitude}, Serial:${this.serial_number},`;
+    return `Lat: ${this.latitude}, Long: ${this.latitude}, Serial: ${this.serial_number},`;
   }
 }
