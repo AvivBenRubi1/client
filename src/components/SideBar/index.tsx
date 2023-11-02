@@ -13,7 +13,7 @@ export default function SideBar({ frames }: { frames: droneFrame }) {
           alt="108"
           style={{ height: "5vw", width: "5vw", alignSelf: "center", marginTop:"1vw " }}
         />
-        <FramesList frames={frames} />
+        {/* <FramesList frames={frames} /> */}
       </Grid>
     </div>
   );
