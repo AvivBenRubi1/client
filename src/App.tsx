@@ -1,17 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import "./App.css";
 import "./components/BaseMap/index.css";
 import "leaflet/dist/leaflet.css";
 
 import { Grid } from "@mui/material";
-import { red } from "@mui/material/colors";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-
-import { socket } from "./socket";
-import SensorData from "./dtos/sensor-data.dto";
-import DroneData from "./models/drone.model";
-import ControllerData from "./models/controller.model";
-import HomeData from "./models/home.model";
+import { socket } from "./connections/socket";
+import Telemetry from "./dtos/telemetry";
+import DroneData from "./models/drone";
+import ControllerData from "./models/controller";
+import HomeData from "./models/home";
 import { Map as LeafletMap } from "leaflet";
 import BaseMap from "./components/BaseMap";
 import MarkersManager from "./components/BaseMap/MarkerManagement/markersManager";
@@ -19,13 +16,16 @@ import MarkersManager from "./components/BaseMap/MarkerManagement/markersManager
 import DroneImage from "./assets/images/red_drone.png";
 import HomeImage from "./assets/images/home.png";
 import ControllerImage from "./assets/images/controller.png";
-import Frame from "./components/SideBar/FramesList/frame";
 import SideBar from "./components/SideBar";
-import FrameProps from "./interfaces/frame-props.interface";
+import { droneFrame } from "./models/drone";
+import { reducer } from "./reducers/droneReducer";
 
 function App() {
   const [leafletMap, setLeafletMap] = useState<LeafletMap | null>(null);
-  
+  const [dataFrame, setDataFrame] = useState<droneFrame>({drones:[], map:leafletMap});
+  const [state, dispatch] = useReducer(reducer,{drones:[], map:leafletMap});
+
+
   useEffect(() => {
     if (!leafletMap) {
       return;
@@ -38,11 +38,10 @@ function App() {
       ControllerImage
     );
 
-    socket.on("dji_telemetry", (sensorData: SensorData) => {
+    socket.on("dji_telemetry",  (sensorData: Telemetry) => {
       let droneData = new DroneData(sensorData);
-      // let frame: FrameProps = { droneData: droneData, leafletMap: leafletMap };
-      // setFrames([...frames, frame]);
-
+      dispatch({data:droneData, map:leafletMap});
+      setDataFrame({drones:[droneData], map:leafletMap})
       dronesManager.setMarkerData(droneData);
       let homeData = new HomeData(sensorData);
       homesManager.setMarkerData(homeData);
@@ -59,8 +58,8 @@ function App() {
   return (
     <div className="App">
       <Grid container direction={"row"}>
-        <Grid item xs={1.5}>
-          <SideBar/>
+        <Grid item xs={3} style={{overflow:"hidden"}}>
+          <SideBar frames={state} />
         </Grid>
         <Grid item>
           <BaseMap setLeafletMap={setLeafletMap} />

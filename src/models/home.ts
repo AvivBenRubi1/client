@@ -1,5 +1,5 @@
-import SensorData from "../dtos/sensor-data.dto";
-import MarkerData from "../interfaces/marker-data.interface";
+import Telemetry from "../dtos/telemetry";
+import MarkerData from "../interfaces/markerData";
 
 export default class HomeData implements MarkerData {
   longitude: number;
@@ -7,7 +7,7 @@ export default class HomeData implements MarkerData {
   serial_number: string;
   device_type: string;
 
-  constructor(sensorData: SensorData) {
+  constructor(sensorData: Telemetry) {
     this.latitude = sensorData.latitude_home;
     this.longitude = sensorData.longitude_home;
     this.serial_number = sensorData.serial_number;

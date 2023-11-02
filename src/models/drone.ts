@@ -1,5 +1,5 @@
-import SensorData from "../dtos/sensor-data.dto";
-import MarkerData from "../interfaces/marker-data.interface";
+import Telemetry from "../dtos/telemetry";
+import MarkerData from "../interfaces/markerData";
 
 export default class DroneData implements MarkerData {
   longitude: number;
@@ -8,7 +8,7 @@ export default class DroneData implements MarkerData {
   serial_number: string;
   device_type: string;
 
-  constructor(sensorData: SensorData) {
+  constructor(sensorData: Telemetry) {
     this.serial_number = sensorData.serial_number;
     this.latitude = sensorData.latitude;
     this.longitude = sensorData.longitude;
@@ -18,6 +18,11 @@ export default class DroneData implements MarkerData {
 
   getDetails(): string {
     return `Lat:${this.latitude}, Long:${this.latitude},
-     Type:${this.device_type}, Serial:${this.serial_number},`;
+    Type:${this.device_type}, Serial:${this.serial_number},`;
   }
+}
+
+export interface droneFrame {
+  drones: Array<DroneData>;
+  map: any;
 }

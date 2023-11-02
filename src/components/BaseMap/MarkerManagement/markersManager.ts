@@ -1,6 +1,6 @@
 import { Map as LeafletMap } from "leaflet";
 import DynamicMarker from "./dynamicMarker";
-import MarkerData from "../../../interfaces/marker-data.interface";
+import MarkerData from "../../../interfaces/markerData";
 
 export default class MarkersManager<T extends MarkerData> {
   private readonly leafletMap: LeafletMap;
