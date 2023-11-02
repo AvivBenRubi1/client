@@ -1,4 +1,4 @@
-import SensorData from "../dtos/sensor-data.dto";
+import Telemetry from "../dtos/telemetry";
 
 export default interface MarkerData {
   serial_number: string;

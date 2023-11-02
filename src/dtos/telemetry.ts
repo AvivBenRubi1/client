@@ -1,4 +1,4 @@
-export default class SensorData {
+export default class Telemetry {
   constructor(
     pkt_len: number,
     public unk: number,

@@ -1,7 +1,7 @@
 import { Grid, ListItem } from "@mui/material";
-import FrameProps from "../../../interfaces/frame-props.interface";
+import FrameProps from "../../../interfaces/frameProps";
 import Frame from "./frame";
-import { droneFrame } from "../../../models/drone.model";
+import { droneFrame } from "../../../models/drone";
 import List from '@mui/material/List';
 
 export default function FramesList({ frames }: { frames: droneFrame }) {

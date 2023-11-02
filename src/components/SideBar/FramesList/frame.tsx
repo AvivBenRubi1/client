@@ -1,5 +1,5 @@
 import { Grid, Card, popoverClasses, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import FrameProps from "../../../interfaces/frame-props.interface";
+import FrameProps from "../../../interfaces/frameProps";
 import alert from "../../../assets/images/warning.png"
 
 function Frame({ props }: { props: FrameProps }) {

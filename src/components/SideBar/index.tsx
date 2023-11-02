@@ -1,7 +1,7 @@
 import logo108 from "../../assets/images/108.png";
 import { Grid, Card } from "@mui/material";
 import FramesList from "./FramesList";
-import { droneFrame } from "../../models/drone.model";
+import { droneFrame } from "../../models/drone";
 
 export default function SideBar({ frames }: { frames: droneFrame }) {
   

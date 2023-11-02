@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import DroneData, { droneFrame } from "./models/drone.model";
+import DroneData, { droneFrame } from "../models/drone";
 
 export const reducer = (state: droneFrame, action: any): droneFrame => {
   if (state.drones.length === 0) {

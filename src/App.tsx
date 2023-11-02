@@ -4,11 +4,11 @@ import "./components/BaseMap/index.css";
 import "leaflet/dist/leaflet.css";
 
 import { Grid } from "@mui/material";
-import { socket } from "./socket";
-import SensorData from "./dtos/sensor-data.dto";
-import DroneData from "./models/drone.model";
-import ControllerData from "./models/controller.model";
-import HomeData from "./models/home.model";
+import { socket } from "./connections/socket";
+import Telemetry from "./dtos/telemetry";
+import DroneData from "./models/drone";
+import ControllerData from "./models/controller";
+import HomeData from "./models/home";
 import { Map as LeafletMap } from "leaflet";
 import BaseMap from "./components/BaseMap";
 import MarkersManager from "./components/BaseMap/MarkerManagement/markersManager";
@@ -17,8 +17,8 @@ import DroneImage from "./assets/images/red_drone.png";
 import HomeImage from "./assets/images/home.png";
 import ControllerImage from "./assets/images/controller.png";
 import SideBar from "./components/SideBar";
-import { droneFrame } from "./models/drone.model";
-import { reducer } from "./droneReducer";
+import { droneFrame } from "./models/drone";
+import { reducer } from "./reducers/droneReducer";
 
 function App() {
   const [leafletMap, setLeafletMap] = useState<LeafletMap | null>(null);
@@ -38,7 +38,7 @@ function App() {
       ControllerImage
     );
 
-    socket.on("dji_telemetry",  (sensorData: SensorData) => {
+    socket.on("dji_telemetry",  (sensorData: Telemetry) => {
       let droneData = new DroneData(sensorData);
       dispatch({data:droneData, map:leafletMap});
       setDataFrame({drones:[droneData], map:leafletMap})
