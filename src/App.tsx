@@ -76,7 +76,7 @@ function App() {
   return (
     <div className="App">
       <Grid container direction={"row"}>
-        <Grid item xs={3} style={{ overflow: "hidden" }}>
+        <Grid item xs={3}>
           <SideBar frames={state} />
         </Grid>
         <Grid item>

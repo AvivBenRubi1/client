@@ -12,7 +12,7 @@ export default function FramesList({ frames }: { frames: droneFrame }) {
         sx={{
           width: '100%', maxWidth: 360, bgcolor: 'background.paper'
         }}
-        style={{ overflowY: "auto", overflowX: "hidden" }}
+        // style={{ overflowY: "auto", overflowX: "hidden" }}
         aria-label="contacts"
       >
         {frames.drones.map((frame) => (
