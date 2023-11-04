@@ -1,3 +1,4 @@
+import { Map as LeafletMap } from "leaflet";
 import MarkersManager from "../components/BaseMap/MarkerManagement/markersManager";
 import Telemetry from "../dtos/telemetry";
 import MarkerData from "../interfaces/markerData";
@@ -28,7 +29,4 @@ export default class DroneData implements MarkerData {
 
 export type droneFrame = {
   drones: Array<DroneData>,
-  // home:Array<HomeData>,
-  // controller:Array<ControllerData>,
-  map: any,
 }

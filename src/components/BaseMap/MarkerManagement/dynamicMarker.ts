@@ -1,6 +1,6 @@
 import { MutableRefObject, useEffect, useMemo, useRef } from "react";
 import L, { LatLng, Map, icon } from "leaflet";
-import { Marker, Popup, useMapEvents } from "react-leaflet";
+import { Marker, Popup, useMapEvents, useMap } from "react-leaflet";
 import MarkerData from "../../../interfaces/markerData";
 
 export default class DynamicMarker<T extends MarkerData> {
@@ -8,11 +8,12 @@ export default class DynamicMarker<T extends MarkerData> {
   private readonly marker: L.Marker;
 
   constructor(
-    private readonly map: Map,
+    private readonly map: L.Map,
     private readonly image: string,
     private markerData: T,
     private readonly iconSize?: number
   ) {
+
     if (iconSize === undefined) {
       iconSize = DynamicMarker.DEFAULT_ICON_SIZE;
     }
@@ -27,7 +28,7 @@ export default class DynamicMarker<T extends MarkerData> {
       markerData.getDetails()
     );
 
-   this.marker.addTo(map);
+    this.map.addLayer(this.marker);
   }
 
   updateData(markerData: T) {

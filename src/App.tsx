@@ -20,52 +20,39 @@ import SideBar from "./components/SideBar";
 import { droneFrame } from "./models/drone";
 import { reducer } from "./reducers/droneReducer";
 import { log } from "console";
+import AbstractMarkersManager from "./components/BaseMap/MarkerManagement/abstractMarkersManager";
+import TelemetryCollection from "./models/telemetryCollection";
 
 function App() {
-  const [leafletMap, setLeafletMap] = useState<LeafletMap | null>(null);
+  const [markersManager, setMarkerManager] = useState<AbstractMarkersManager>();
+  const [leafletMap, setLeafletMap] = useState<LeafletMap>();
+  const [dataFrame, setDataFrame] = useState<droneFrame>({ drones: [] });
 
-  const [dronesManager, setDronesManager] = useState<MarkersManager<DroneData>>();
-  const [homesManager, setHomesManager] = useState<MarkersManager<HomeData>>();
-  const [controllersManager, setControllersManager] = useState<MarkersManager<ControllerData>>();
-
-  const [state, dispatch] = useReducer(reducer, { drones: [],  map: leafletMap });
-  const [dataFrame, setDataFrame] = useState<droneFrame>({drones:[], map:leafletMap});
+  const [state, dispatch] = useReducer(reducer, dataFrame);
 
   useEffect(() => {
-    if (!leafletMap) {
-      return;
-    }
-
-    setDronesManager(new MarkersManager<DroneData>(leafletMap, DroneImage));
-    setHomesManager(new MarkersManager<DroneData>(leafletMap, HomeImage));
-    setControllersManager(new MarkersManager<ControllerData>(
-      leafletMap,
-      ControllerImage
-    ));
-
+    if (!leafletMap) return;
+    setMarkerManager(new AbstractMarkersManager(leafletMap));
   }, [leafletMap]);
 
   useEffect(() => {
-    if (!(dronesManager && homesManager && controllersManager)) return
+    if (!(markersManager && leafletMap)) return;
 
-    const onTelemetry = (sensorData: Telemetry) => {
-      let droneData = new DroneData(sensorData);
-      let homeData = new HomeData(sensorData);
-      let controllerData = new ControllerData(sensorData);
+    const onTelemetry = (telemetry: Telemetry) => {
+      let telemetryCollection = new TelemetryCollection(telemetry);
+      console.log(telemetry);
 
-      dronesManager.setMarkerData(droneData);
-      homesManager.setMarkerData(homeData);
-      controllersManager.setMarkerData(controllerData);
-      // console.log(droneData, homeData,new ControllerData(sensorData) );
+      markersManager.setTelemetryCollection(telemetryCollection);
 
-      dispatch({ data: droneData, map: leafletMap });
-      setDataFrame({drones:[droneData], map:leafletMap})
-    }
+      dispatch({ map: leafletMap, data: telemetryCollection.droneData });
+      setDataFrame({ drones: [telemetryCollection.droneData] });
+    };
 
     socket.on("dji_telemetry", onTelemetry);
-    return () => { socket.off("dji_telemetry", onTelemetry) }
-
-  }, [dronesManager, homesManager, controllersManager])
+    return () => {
+      socket.off("dji_telemetry", onTelemetry);
+    };
+  }, [markersManager, leafletMap]);
 
   // const darkTheme = createTheme({
   //   palette: {
@@ -77,7 +64,7 @@ function App() {
     <div className="App">
       <Grid container direction={"row"}>
         <Grid item xs={3}>
-          <SideBar frames={state} />
+          {leafletMap && <SideBar frame={state} map={leafletMap} />}
         </Grid>
         <Grid item>
           <BaseMap setLeafletMap={setLeafletMap} />

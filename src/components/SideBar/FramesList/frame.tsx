@@ -4,11 +4,10 @@ import alert from "../../../assets/images/warning.png"
 import home from "../../../assets/images/home.png"
 import controller from "../../../assets/images/controller.png"
 import drone from "../../../assets/images/red_drone.png"
+
 function Frame({ props }: { props: FrameProps }) {
   let droneData = props.droneData;
-  // let homeData = props.homeData;
-  let map = props.leafletMap;
-
+  let map = props.map;
   return (
     <Card
       style={{

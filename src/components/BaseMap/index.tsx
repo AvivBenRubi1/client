@@ -10,7 +10,7 @@ function BaseMap({setLeafletMap}: any)  {
             maxZoom={16}
             className="map"
             ref={setLeafletMap} >
-            <TileLayer url="http://localhost:3500/tiles/{z}/{x}/{y}.png" />
+            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         </MapContainer>
     </div>)
 }

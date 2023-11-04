@@ -1,11 +1,11 @@
 import ControllerData from "../models/controller";
-import DroneData from "../models/drone"
+import DroneData from "../models/drone";
 import HomeData from "../models/home";
-import { Map as LeafletMap } from "leaflet";
+import L from "leaflet";
 
 export default interface FrameProps {
-    droneData: DroneData
-    // controlerData:ControllerData
-    // homeData: HomeData
-    leafletMap: LeafletMap
-  }
+  map: L.Map;
+  droneData: DroneData;
+  // controlerData:ControllerData
+  // homeData: HomeData
+}

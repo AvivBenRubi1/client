@@ -18,7 +18,7 @@ export const reducer = (state: droneFrame, action: any): droneFrame => {
     });
     if (!flag) state.drones.push(action.data);
   }
-  state.map = action.map
+
   //   console.log(state, action);
   return state;
 };

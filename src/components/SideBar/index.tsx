@@ -3,8 +3,7 @@ import { Grid, Card } from "@mui/material";
 import FramesList from "./FramesList";
 import { droneFrame } from "../../models/drone";
 
-type SideBarProps = { frames: droneFrame,  }
-export default function SideBar({ frames }: { frames: droneFrame }) {
+export default function SideBar({ map, frame }: { map: L.Map, frame: droneFrame }) {
   
   return (
     <div>
@@ -14,7 +13,7 @@ export default function SideBar({ frames }: { frames: droneFrame }) {
           alt="108"
           style={{ height: "5vw", width: "5vw", alignSelf: "center", marginTop:"1vw " }}
         />
-        <FramesList frames={frames} />
+        <FramesList frame={frame} map={map} />
       </Grid>
     </div>
   );
