@@ -15,7 +15,7 @@ function Frame({ props }: { props: FrameProps }) {
         marginBottom: "1vw",
         padding: "0.3vw",
         width: "21vw",
-        maxHeight: "20vw",
+        maxHeight: "25vw",
         overflowY: "auto",
         overflowX: "hidden",
         marginRight: "-7vw"
@@ -26,21 +26,12 @@ function Frame({ props }: { props: FrameProps }) {
     >
       <Accordion>
         <AccordionSummary>
-          <Grid container direction={"row"}>
-            <ListItemText primary={`Device Type `} secondary={droneData.device_type} />
+            <img src={alert} alt="drone alert" width={"40vw"}/>
+            <ListItemText primary={`Device Type `} secondary={droneData.device_type} style={{paddingLeft:"1vw"}} />
             <ListItemText primary={`Serial Number `} secondary={droneData.serial_number} />
-          </Grid>
         </AccordionSummary>
       </Accordion>
-      <Grid container direction={"row"} style={{ marginTop: "1vw" }}>
-        <Grid item> <ListItemButton>
-          <ListItemIcon>
-            <img src={alert} alt="drone alert" width={"40vw"} />
-          </ListItemIcon>
-        </ListItemButton>
-        </Grid>
-        <Grid item>
-          <Accordion style={{ width: "15vw" }}>
+          <Accordion>
             <AccordionSummary>
             <Grid container  spacing={1} direction={"row"}>
                 <Grid item>
@@ -55,8 +46,6 @@ function Frame({ props }: { props: FrameProps }) {
                   <ListItemText primary={`Latitude `} secondary={droneData.latitude} />
                   <ListItemText primary={`Longitude `} secondary={droneData.longitude} />
                   <ListItemText primary={`Altitude `} secondary={droneData.altitude} />
-                  {/* <ListItemText primary={`Serial Number `} secondary={droneData.serial_number} />
-                  <ListItemText primary={`Device Type `} secondary={droneData.device_type} /> */}
                 </Grid>
               </ListItemButton>
             </AccordionDetails>
@@ -110,11 +99,6 @@ function Frame({ props }: { props: FrameProps }) {
               </ListItemButton>
             </AccordionDetails>
           </Accordion>
-        </Grid>
-
-      </Grid>
-
-
     </Card>
   );
 }
