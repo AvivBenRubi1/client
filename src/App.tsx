@@ -66,7 +66,7 @@ function App() {
         <Grid item xs={3}>
           {leafletMap && <SideBar frame={state} map={leafletMap} />}
         </Grid>
-        <Grid item>
+        <Grid xs={3} item>
           <BaseMap setLeafletMap={setLeafletMap} />
         </Grid>
       </Grid>
