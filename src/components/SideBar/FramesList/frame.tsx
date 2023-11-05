@@ -1,68 +1,104 @@
-import { Grid, Card, popoverClasses, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import { Grid, Card, popoverClasses, ListItem, ListItemButton, ListItemIcon, ListItemText, Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
 import FrameProps from "../../../interfaces/frameProps";
 import alert from "../../../assets/images/warning.png"
+import home from "../../../assets/images/home.png"
+import controller from "../../../assets/images/controller.png"
+import drone from "../../../assets/images/red_drone.png"
 
 function Frame({ props }: { props: FrameProps }) {
   let droneData = props.droneData;
-  let map = props.leafletMap;
-
+  let map = props.map;
   return (
     <Card
       style={{
         backgroundColor: "#f338385e",
         marginBottom: "1vw",
         padding: "0.3vw",
-        width:"21vw",
-        maxHeight: "20vw",
+        width: "21vw",
+        maxHeight: "25vw",
         overflowY: "auto",
-        overflowX:"hidden",
+        overflowX: "hidden",
         marginRight: "-7vw"
       }}
       onClick={(e) => {
         map.setView([droneData.latitude, droneData.longitude], 13);
       }}
     >
-
-        <ListItemButton>
-          <ListItemIcon>
-            <img src={alert} alt="drone alert" width={"35vw"} />
-          </ListItemIcon>
-          <Grid container direction={"column"}>
-          <ListItemText primary={`Latitude `} secondary={droneData.latitude} />
-          <ListItemText primary={`Longitude `} secondary={droneData.longitude} />
-          <ListItemText primary={`Altitude `} secondary={droneData.altitude} />
-          <ListItemText primary={`Serial Number `} secondary={droneData.serial_number} />
-          <ListItemText primary={`Device Type `} secondary={droneData.device_type} />
-          </Grid>
-          {/* <Grid container direction={"column"}>
-
-          
-          <Grid container spacing={3} direction="row">
-            <Grid item>Latitude</Grid>
-            <Grid item>{droneData.latitude}</Grid>
-          </Grid>
-          <Grid container spacing={3} direction="row">
-            <Grid item>Longitude</Grid>
-            <Grid item>{droneData.longitude}</Grid>
-          </Grid>
-          <Grid container spacing={3} direction="row">
-            <Grid item>Altitude</Grid>
-            <Grid item>{droneData.altitude}</Grid>
-          </Grid>
-          <Grid container spacing={3} direction="row">
-            <Grid item>Serial Number</Grid>
-            <Grid item>{droneData.serial_number}</Grid>
-          </Grid>
-          <Grid container spacing={3} direction="row">
-            <Grid item>Device Type</Grid>
-            <Grid item>{droneData.device_type}</Grid>
-          </Grid></Grid> */}
-        </ListItemButton>
-
-
-
-
-
+      <Accordion>
+        <AccordionSummary>
+            <img src={alert} alt="drone alert" width={"40vw"}/>
+            <ListItemText primary={`Device Type `} secondary={droneData.device_type} style={{paddingLeft:"1vw"}} />
+            <ListItemText primary={`Serial Number `} secondary={droneData.serial_number} />
+        </AccordionSummary>
+      </Accordion>
+          <Accordion>
+            <AccordionSummary>
+            <Grid container  spacing={1} direction={"row"}>
+                <Grid item>
+                  <img src={drone} alt="home alert" width={"20vw"} />
+                </Grid>
+                <Grid item>  Drone Details</Grid>
+              </Grid>
+            </AccordionSummary>
+            <AccordionDetails>
+              <ListItemButton>
+                <Grid container direction={"column"}>
+                  <ListItemText primary={`Latitude `} secondary={droneData.latitude} />
+                  <ListItemText primary={`Longitude `} secondary={droneData.longitude} />
+                  <ListItemText primary={`Altitude `} secondary={droneData.altitude} />
+                </Grid>
+              </ListItemButton>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion>
+            <AccordionSummary>
+              <Grid container  spacing={1} direction={"row"}>
+                <Grid item>
+                  <img src={home} alt="home alert" width={"20vw"} />
+                </Grid>
+                <Grid item>  Home Details</Grid>
+              </Grid>
+            </AccordionSummary>
+            <AccordionDetails>
+              <ListItemButton>
+                <Grid container direction={"column"}>
+                  <ListItemText primary={`Latitude `} secondary={droneData.latitude} />
+                  <ListItemText primary={`Longitude `} secondary={droneData.longitude} />
+                  <ListItemText primary={`Altitude `} secondary={droneData.altitude} />
+                </Grid>
+                {/* <Grid container direction={"column"}>
+          <ListItemText primary={`Latitude `} secondary={homeData.latitude} />
+          <ListItemText primary={`Longitude `} secondary={homeData.longitude} />
+          <ListItemText primary={`Serial Number `} secondary={homeData.serial_number} />
+          </Grid> */}
+              </ListItemButton>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion>
+            <AccordionSummary>
+            <Grid container  spacing={1} direction={"row"}>
+                <Grid item>
+                  <img src={controller} alt="home alert" width={"20vw"} />
+                </Grid>
+                <Grid item>Controller Details</Grid>
+              </Grid>
+              
+            </AccordionSummary>
+            <AccordionDetails>
+              <ListItemButton>
+                <Grid container direction={"column"}>
+                  <ListItemText primary={`Latitude `} secondary={droneData.latitude} />
+                  <ListItemText primary={`Longitude `} secondary={droneData.longitude} />
+                  <ListItemText primary={`Altitude `} secondary={droneData.altitude} />
+                </Grid>
+                {/* <Grid container direction={"column"}>
+          <ListItemText primary={`Latitude `} secondary={homeData.latitude} />
+          <ListItemText primary={`Longitude `} secondary={homeData.longitude} />
+          <ListItemText primary={`Serial Number `} secondary={homeData.serial_number} />
+          </Grid> */}
+              </ListItemButton>
+            </AccordionDetails>
+          </Accordion>
     </Card>
   );
 }
