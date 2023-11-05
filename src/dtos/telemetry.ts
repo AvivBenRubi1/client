@@ -24,4 +24,5 @@ export default interface Telemetry {
   crc_packet: string;
   crc_calculated: string;
   status: string;
+  number_in_squad: string
 }
