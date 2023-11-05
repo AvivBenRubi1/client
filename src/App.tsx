@@ -26,9 +26,7 @@ import TelemetryCollection from "./models/telemetryCollection";
 function App() {
   const [markersManager, setMarkerManager] = useState<AbstractMarkersManager>();
   const [leafletMap, setLeafletMap] = useState<LeafletMap>();
-  const [dataFrame, setDataFrame] = useState<droneFrame>({ drones: [] });
-
-  const [state, dispatch] = useReducer(reducer, dataFrame);
+  const [state, dispatch] = useReducer(reducer, []);
 
   useEffect(() => {
     if (!leafletMap) return;
@@ -44,8 +42,7 @@ function App() {
 
       markersManager.setTelemetryCollection(telemetryCollection);
 
-      dispatch({ map: leafletMap, data: telemetryCollection.droneData });
-      setDataFrame({ drones: [telemetryCollection.droneData] });
+      dispatch(telemetryCollection);
     };
 
     socket.on("dji_telemetry", onTelemetry);
@@ -64,7 +61,7 @@ function App() {
     <div className="App">
       <Grid container direction={"row"}>
         <Grid item xs={3}>
-          {leafletMap && <SideBar frame={state} map={leafletMap} />}
+          {leafletMap && <SideBar state={state} map={leafletMap} />}
         </Grid>
         <Grid item>
           <BaseMap setLeafletMap={setLeafletMap} />

@@ -2,8 +2,10 @@ import { Grid, ListItem } from "@mui/material";
 import Frame from "./frame";
 import { droneFrame } from "../../../models/drone";
 import List from "@mui/material/List";
+import TelemetryCollection from "../../../models/telemetryCollection";
+import { stat } from "fs";
 
-export default function FramesList({ map, frame }: { map: L.Map, frame: droneFrame }) {
+export default function FramesList({ map, state }: { map: L.Map, state:Array<TelemetryCollection>}) {
   return (
     <Grid container style={{ display: "flex" }} direction="column">
       <List
@@ -15,9 +17,9 @@ export default function FramesList({ map, frame }: { map: L.Map, frame: droneFra
         // style={{ overflowY: "auto", overflowX: "hidden" }}
         aria-label="contacts"
       >
-        {frame.drones.map((drone) => (
-          <ListItem key={drone.serial_number}>
-            <Frame props={{ map: map, droneData: drone }} />
+        {state.map((telemetryCollection) => (
+          <ListItem key={telemetryCollection.serial_number}>
+            <Frame props={{ map: map, droneData: telemetryCollection.droneData }} />
           </ListItem>
         ))}
       </List>
