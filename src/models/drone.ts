@@ -1,5 +1,9 @@
+import { Map as LeafletMap } from "leaflet";
+import MarkersManager from "../components/BaseMap/MarkerManagement/markersManager";
 import Telemetry from "../dtos/telemetry";
 import MarkerData from "../interfaces/markerData";
+import ControllerData from "./controller";
+import HomeData from "./home";
 
 export default class DroneData implements MarkerData {
   longitude: number;
@@ -17,12 +21,12 @@ export default class DroneData implements MarkerData {
   }
 
   getDetails(): string {
-    return `Lat:${this.latitude}, Long:${this.latitude},
-    Type:${this.device_type}, Serial:${this.serial_number},`;
+    return `Lat: ${this.latitude}, Long: ${this.latitude},
+    Type: ${this.device_type}, Serial: ${this.serial_number},`;
   }
+  
 }
 
-export interface droneFrame {
-  drones: Array<DroneData>;
-  map: any;
+export type droneFrame = {
+  drones: Array<DroneData>,
 }
