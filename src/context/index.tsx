@@ -1,5 +1,6 @@
 import { useReducer, createContext, useCallback, useContext } from "react"
 import MarkerData from "../interfaces/markerData"
+import Telemetry from "../dtos/telemetry"
 
 
 type Action = {
@@ -15,20 +16,26 @@ type Marker = {
 type State = {
     markers: {
         [key: string]: Marker
+    },
+    droneData: {
+        [key: string]: Telemetry
     }
 }
 
 type ReturnedState = {
     setMarker: (marker:Marker) => void,
+    setDroneData: (telemetry: Telemetry) => void
 } & State
 
 const initialState : State = {
-    markers: {}
+    markers: {},
+    droneData: {}
 }
 
 const context = createContext<ReturnedState>({
     ...initialState,
     setMarker: (marker: Marker) => {},
+    setDroneData: (telemetry: Telemetry) => {},
 })
 
 context.displayName = 'mapContext'
@@ -39,6 +46,8 @@ const reducerFunc = (state: State, action: Action) : State => {
     switch (action.type) {
         case 'setMarkers':
             return {...state, markers: {...state.markers, [`${action.payload.metadata.serial_number}_${action.payload.metadata.type}`]: action.payload }}
+        case 'setDroneData':
+            return {...state, droneData: {...state.droneData, [action.payload.serial_number]: action.payload }}
         default:
             return state
     }
@@ -60,7 +69,15 @@ export const AppContext = ({children}: StateProps) => {
     }, [state])
 
 
-    const value : ReturnedState = {...state, setMarker}
+    const setDroneData = useCallback((telemetry: Telemetry) => {
+        dispatch({
+            type: 'setDroneData',
+            payload: telemetry
+        })
+    }, [state])
+
+
+    const value : ReturnedState = {...state, setMarker, setDroneData}
 
     return <Provider value={value}>
         {children}

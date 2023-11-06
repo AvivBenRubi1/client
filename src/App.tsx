@@ -1,22 +1,19 @@
-import React, { useEffect, useReducer, useState } from "react";
-import "./App.css";
-import "./components/BaseMap/index.css";
-import "leaflet/dist/leaflet.css";
-
+import { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
+import L, { Map as LeafletMap } from "leaflet";
 import { socket } from "./connections/socket";
 import Telemetry from "./dtos/telemetry";
-import L, { Map as LeafletMap } from "leaflet";
 import BaseMap from "./components/BaseMap";
-import MarkersManager from "./components/BaseMap/MarkerManagement/markersManager";
 import EnemyDroneImage from "./assets/images/red_drone.png";
 import FriendDroneImage from "./assets/images/green_drone.png";
 import DroneImage from "./assets/images/red_drone.png";
 import HomeImage from "./assets/images/home.png";
 import ControllerImage from "./assets/images/controller.png";
-import SideBar from "./components/SideBar";
 import MarkerData, { ClassificationType, MarkerTypes } from "./interfaces/markerData";
 import { AppContext, useAppContext } from "./context";
+import "./App.css";
+import "./components/BaseMap/index.css";
+import "leaflet/dist/leaflet.css";
 
 const buildSerialId = (serialNumber: string, type: MarkerTypes) => {
   return `${serialNumber}_${type}`
@@ -63,7 +60,7 @@ const typeToImageDict = {
 
 function App() {
   const [leafletMap, setLeafletMap] = useState<LeafletMap>();
-  const {markers, setMarker} = useAppContext()
+  const {markers, setMarker, setDroneData, droneData} = useAppContext()
 
   useEffect(() => {
     if (!leafletMap) return;
@@ -85,6 +82,8 @@ function App() {
       const dronePosition = new L.LatLng(newDroneMarker.latitude, newDroneMarker.longitude)
       const controllerPosition = new L.LatLng(newControllerMarker.latitude, newControllerMarker.longitude)
 
+      setDroneData(telemetry)
+      
       if(!homeMarker){
         const h = new L.Marker(homePosition, { icon: getIcon(typeToImageDict['home']) }).bindPopup(
           'stam'
@@ -135,7 +134,7 @@ function App() {
     return () => {
       socket.off("dji_telemetry", onTelemetry);
     };
-  }, [markers, leafletMap]);
+  }, [markers, leafletMap, droneData]);
 
 
   return (
