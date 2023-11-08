@@ -1,11 +1,10 @@
 import { Grid, Card, popoverClasses, ListItem, ListItemButton, ListItemIcon, ListItemText, Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
-import FrameProps from "../../../interfaces/frameProps";
 import alert from "../../../assets/images/warning.png"
 import home from "../../../assets/images/home.png"
 import controller from "../../../assets/images/controller.png"
 import drone from "../../../assets/images/red_drone.png"
 
-function Frame({ props }: { props: FrameProps }) {
+function Frame({ props }: { props: any }) {
   let droneData = props.droneData;
   let map = props.map;
   return (

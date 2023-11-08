@@ -1,9 +1,8 @@
 import { Grid, ListItem } from "@mui/material";
 import Frame from "./frame";
-import { droneFrame } from "../../../models/drone";
 import List from "@mui/material/List";
 
-export default function FramesList({ map, frame }: { map: L.Map, frame: droneFrame }) {
+export default function FramesList({ map, frame }: { map: L.Map, frame: any }) {
   return (
     <Grid container style={{ display: "flex" }} direction="column">
       <List
@@ -15,7 +14,7 @@ export default function FramesList({ map, frame }: { map: L.Map, frame: droneFra
         // style={{ overflowY: "auto", overflowX: "hidden" }}
         aria-label="contacts"
       >
-        {frame.drones.map((drone) => (
+        {frame.drones.map((drone : any) => (
           <ListItem key={drone.serial_number}>
             <Frame props={{ map: map, droneData: drone }} />
           </ListItem>
