@@ -1,6 +1,6 @@
 import { Map as LeafletMap } from "leaflet";
 import DynamicMarker from "./dynamicMarker";
-import MarkerData, {MarkerTypes, ClassificationType} from "../../../interfaces/markerData";
+import MarkerData, { MarkerTypes, ClassificationType } from "../../../interfaces/markerData";
 import EnemyDroneImage from "../../../assets/images/red_drone.png";
 import FriendDroneImage from "../../../assets/images/green_drone.png";
 import ControllerImage from "../../../assets/images/controller.png";
@@ -27,17 +27,17 @@ const typeToImageDict = {
   'controller': ControllerImage,
 } as TypeOfTypeImage
 
-const mapTelemetryToDroneMarkerData = (telemetry: Telemetry, type: MarkerTypes): MarkerData => {
-  return {
-    altitude: type === 'drone' ? telemetry.altitude : type === 'home' ? 0 : 0,
-    latitude: type === 'drone' ? telemetry.latitude : type === 'home' ? telemetry.latitude_home : telemetry.app_lat,
-    longitude: type === 'drone' ? telemetry.longitude : type === 'home' ? telemetry.longitude_home : telemetry.app_lon,
-    classification: telemetry.status as ClassificationType,
-    type,
-    serial_number: telemetry.serial_number,
-    getDetails: () => ''
-  }
-}
+// const mapTelemetryToDroneMarkerData = (telemetry: Telemetry, type: MarkerTypes): MarkerData => {
+//   return {
+//     altitude: type === 'drone' ? telemetry.altitude : type === 'home' ? 0 : 0,
+//     latitude: type === 'drone' ? telemetry.latitude : type === 'home' ? telemetry.latitude_home : telemetry.app_lat,
+//     longitude: type === 'drone' ? telemetry.longitude : type === 'home' ? telemetry.longitude_home : telemetry.app_lon,
+//     classification: telemetry.status as ClassificationType,
+//     type,
+//     serial_number: telemetry.serial_number,
+//     getDetails: () => ''
+//   }
+// }
 
 export default class MarkersManager<T extends MarkerData> {
   private readonly serialMarkerMap: Map<string, DynamicMarker<T>>;
@@ -48,20 +48,20 @@ export default class MarkersManager<T extends MarkerData> {
 
   setMarkerData(markerData: Telemetry) {
     if (
-      !markerData?.latitude ||
-      markerData.latitude === 0 ||
-      markerData.longitude === 0
+      !markerData?.drone_latitude ||
+      markerData.drone_latitude === 0 ||
+      markerData.drone_longitude === 0
     ) {
       return;
     }
 
-    const drone = mapTelemetryToDroneMarkerData(markerData, 'drone')
-    const controller = mapTelemetryToDroneMarkerData(markerData, 'controller')
-    const home = mapTelemetryToDroneMarkerData(markerData, 'home')
+    // const drone = mapTelemetryToDroneMarkerData(markerData, 'drone')
+    // const controller = mapTelemetryToDroneMarkerData(markerData, 'controller')
+    // const home = mapTelemetryToDroneMarkerData(markerData, 'home')
 
-    let dynamicMarkerDrone = this.serialMarkerMap.get(markerData.serial_number);
-    let dynamicMarkerHome = this.serialMarkerMap.get(markerData.serial_number);
-    let dynamicMarkerController = this.serialMarkerMap.get(markerData.serial_number);
+    // let dynamicMarkerDrone = this.serialMarkerMap.get(markerData.serial_number);
+    // let dynamicMarkerHome = this.serialMarkerMap.get(markerData.serial_number);
+    // let dynamicMarkerController = this.serialMarkerMap.get(markerData.serial_number);
 
 
     // if (dynamicMarkerDrone === undefined) {

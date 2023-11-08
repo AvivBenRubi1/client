@@ -26,7 +26,7 @@ function Frame({ props }: { props: any }) {
       <Accordion>
         <AccordionSummary>
             <img src={alert} alt="drone alert" width={"40vw"}/>
-            <ListItemText primary={`Device Type `} secondary={droneData.device_type} style={{paddingLeft:"1vw"}} />
+            <ListItemText primary={`Device Type `} secondary={droneData.drone_device_type} style={{paddingLeft:"1vw"}} />
             <ListItemText primary={`Serial Number `} secondary={droneData.serial_number} />
         </AccordionSummary>
       </Accordion>
@@ -42,9 +42,9 @@ function Frame({ props }: { props: any }) {
             <AccordionDetails>
               <ListItemButton>
                 <Grid container direction={"column"}>
-                  <ListItemText primary={`Latitude `} secondary={droneData.latitude} />
-                  <ListItemText primary={`Longitude `} secondary={droneData.longitude} />
-                  <ListItemText primary={`Altitude `} secondary={droneData.altitude} />
+                  <ListItemText primary={`Latitude `} secondary={droneData.drone_latitude} />
+                  <ListItemText primary={`Longitude `} secondary={droneData.drone_longitude} />
+                  <ListItemText primary={`Altitude `} secondary={droneData.drone_altitude} />
                 </Grid>
               </ListItemButton>
             </AccordionDetails>

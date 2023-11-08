@@ -6,7 +6,6 @@ import Telemetry from "./dtos/telemetry";
 import BaseMap from "./components/BaseMap";
 import EnemyDroneImage from "./assets/images/red_drone.png";
 import FriendDroneImage from "./assets/images/green_drone.png";
-import DroneImage from "./assets/images/red_drone.png";
 import HomeImage from "./assets/images/home.png";
 import AntennaImage from "./assets/images/antenna.png";
 import ControllerImage from "./assets/images/controller.png";
@@ -18,6 +17,7 @@ import "leaflet/dist/leaflet.css";
 import { Marker } from "./models/marker";
 import NewSideBar from "./components/SideBar/NewSideBar";
 import { Polygon } from "./models/polygon";
+import { Antenna, AntennaData } from "./models/antenna";
 
 const buildSerialId = (serialNumber: string, type: MarkerTypes) => {
   return `${serialNumber}_${type}`
@@ -51,13 +51,13 @@ const typeToImageDict = {
 
 function App() {
   const [leafletMap, setLeafletMap] = useState<LeafletMap>();
-  const { markers, setMarker, polygons } = useAppContext()
+  const { markers, setMarker, polygons, setAntennas, antennas } = useAppContext()
 
   useEffect(() => {
     if (!leafletMap) return;
 
     const onTelemetry = (telemetry: Telemetry) => {
-      const marker = markers[telemetry.serial_number]
+      const marker = markers[telemetry.packet_uuid]
 
       if (!marker) {
         const newMarker = new Marker(leafletMap, telemetry)
@@ -68,30 +68,47 @@ function App() {
       }
     };
 
-    socket.on("dji_telemetry", onTelemetry);
-    socket.on("get_antenna", (polygon: Polygon) => {
-      leafletMap.addLayer(new L.Marker(new L.LatLng(polygon.lat, polygon.long), {
-        icon: L.icon({
-          iconUrl: AntennaImage,
-          iconSize: [30, 30],
-        })
-      }).bindPopup(
-        'Unit 108 antenna'
-      ))
+    const onAntenna = (antennaData: AntennaData) => {
+      const antenna = antennas[antennaData.antenna_name]
 
-      const poly = {
-        coordinates: [polygon.geo],
-        type: 'Polygon'
-      } as GeoJSON.Polygon
-      L.geoJSON(poly, {
-        style: function () {
-          return { color: "#4B0082", opacity: 0.4 }
-        }
-      }).addTo(leafletMap)
-    });
+      if (!antenna) {
+        const newMarker = new Antenna(leafletMap, antennaData)
+        setAntennas(newMarker)
+      } else {
+        antenna.update(antennaData)
+        setAntennas(antenna)
+      }
+    };
+
+    socket.on("dji_telemetry", onTelemetry);
+    socket.on("dji_partial_telemetry", onTelemetry);
+    socket.on("get_antenna", onAntenna);
+
+    // socket.on("get_antenna", (polygon: Polygon) => {
+    //   leafletMap.addLayer(new L.Marker(new L.LatLng(polygon.latitude, polygon.longitude), {
+    //     icon: L.icon({
+    //       iconUrl: AntennaImage,
+    //       iconSize: [30, 30],
+    //     })
+    //   }).bindPopup(
+    //     `unit ${polygon.unit} site name ${polygon.site_name} antenna ${polygon.antenna_name}`
+    //   ))
+
+    //   const poly = {
+    //     coordinates: [polygon.geo],
+    //     type: 'Polygon'
+    //   } as GeoJSON.Polygon
+    //   L.geoJSON(poly, {
+    //     style: function () {
+    //       return { color: "#ffffff", opacity: 0.4 }
+    //     }
+    //   }).addTo(leafletMap)
+    // });
+
     return () => {
       socket.off("dji_telemetry", onTelemetry);
-      socket.off("get_antenna", onTelemetry);
+      socket.off("get_antenna", onAntenna);
+      socket.off("dji_partial_telemetry", onTelemetry);
     };
   }, [markers, leafletMap, polygons]);
 

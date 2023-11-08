@@ -28,7 +28,7 @@ export default () => {
                 <Accordion>
                     <AccordionSummary>
                         <img src={alert} alt="drone alert" width={"40vw"} />
-                        <ListItemText primary={`Device Type `} secondary={markers[key].telemetryData.device_type} style={{ paddingLeft: "1vw" }} />
+                        <ListItemText primary={`Device Type `} secondary={markers[key].telemetryData.drone_model} style={{ paddingLeft: "1vw" }} />
                         <ListItemText primary={`Serial Number `} secondary={markers[key].telemetryData.serial_number} />
                     </AccordionSummary>
                 </Accordion>
@@ -44,9 +44,9 @@ export default () => {
                     <AccordionDetails>
                         <ListItemButton>
                             <Grid container direction={"column"}>
-                                <ListItemText primary={`Latitude `} secondary={markers[key].telemetryData.latitude} />
-                                <ListItemText primary={`Longitude `} secondary={markers[key].telemetryData.longitude} />
-                                <ListItemText primary={`Altitude `} secondary={markers[key].telemetryData.altitude} />
+                                <ListItemText primary={`Latitude `} secondary={markers[key].telemetryData.drone_latitude} />
+                                <ListItemText primary={`Longitude `} secondary={markers[key].telemetryData.drone_longitude} />
+                                <ListItemText primary={`Altitude `} secondary={markers[key].telemetryData.drone_altitude} />
                             </Grid>
                         </ListItemButton>
                     </AccordionDetails>
@@ -63,9 +63,9 @@ export default () => {
                     <AccordionDetails>
                         <ListItemButton>
                             <Grid container direction={"column"}>
-                                <ListItemText primary={`Latitude `} secondary={markers[key].telemetryData.latitude} />
-                                <ListItemText primary={`Longitude `} secondary={markers[key].telemetryData.longitude} />
-                                <ListItemText primary={`Altitude `} secondary={markers[key].telemetryData.altitude} />
+                                <ListItemText primary={`Latitude `} secondary={markers[key].telemetryData.departure_latitude} />
+                                <ListItemText primary={`Longitude `} secondary={markers[key].telemetryData.departure_longitude} />
+                                {/* <ListItemText primary={`Altitude `} secondary={markers[key].telemetryData.altitude} /> */}
                             </Grid>
                         </ListItemButton>
                     </AccordionDetails>
@@ -83,9 +83,9 @@ export default () => {
                     <AccordionDetails>
                         <ListItemButton>
                             <Grid container direction={"column"}>
-                                <ListItemText primary={`Latitude `} secondary={markers[key].telemetryData.latitude} />
-                                <ListItemText primary={`Longitude `} secondary={markers[key].telemetryData.longitude} />
-                                <ListItemText primary={`Altitude `} secondary={markers[key].telemetryData.altitude} />
+                                <ListItemText primary={`Latitude `} secondary={markers[key].telemetryData.remote_latitude} />
+                                <ListItemText primary={`Longitude `} secondary={markers[key].telemetryData.remote_longitude} />
+                                {/* <ListItemText primary={`Altitude `} secondary={markers[key].telemetryData.altitude} /> */}
                             </Grid>
                         </ListItemButton>
                     </AccordionDetails>

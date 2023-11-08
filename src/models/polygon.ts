@@ -1,7 +1,10 @@
 export type Polygon = {
-    uuid: string
+    antenna_name: string
     color: string
-    long: number
-    lat: number
+    longitude: number
+    latitude: number
     geo: number[][]
+    site_name: string
+    unit: number
+    status: boolean
 }
