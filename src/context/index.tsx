@@ -1,6 +1,6 @@
 import { useReducer, createContext, useCallback, useContext } from "react"
-import MarkerData from "../interfaces/markerData"
-import Telemetry from "../dtos/telemetry"
+import { Marker } from "../models/marker"
+import { Polygon } from "../models/polygon"
 
 
 type Action = {
@@ -8,34 +8,29 @@ type Action = {
     payload: any
 }
 
-type Marker = {
-    metadata: MarkerData,
-    mapData: L.Marker
-}
-
 type State = {
     markers: {
         [key: string]: Marker
     },
-    droneData: {
-        [key: string]: Telemetry
+    polygons: {
+        [key: string]: Polygon
     }
 }
 
 type ReturnedState = {
     setMarker: (marker:Marker) => void,
-    setDroneData: (telemetry: Telemetry) => void
+    setPolygons: (polygon:Polygon) => void,
 } & State
 
 const initialState : State = {
     markers: {},
-    droneData: {}
+    polygons: {}
 }
 
 const context = createContext<ReturnedState>({
     ...initialState,
     setMarker: (marker: Marker) => {},
-    setDroneData: (telemetry: Telemetry) => {},
+    setPolygons: (polygon:Polygon) => {}
 })
 
 context.displayName = 'mapContext'
@@ -45,9 +40,10 @@ const Provider = context.Provider
 const reducerFunc = (state: State, action: Action) : State => {
     switch (action.type) {
         case 'setMarkers':
-            return {...state, markers: {...state.markers, [`${action.payload.metadata.serial_number}_${action.payload.metadata.type}`]: action.payload }}
-        case 'setDroneData':
-            return {...state, droneData: {...state.droneData, [action.payload.serial_number]: action.payload }}
+            return {...state, markers: {...state.markers, [action.payload.telemetryData.serial_number]: action.payload }}
+
+        case 'setPolygons':
+            return {...state, polygons: {...state.markers, [action.payload.uuid]: action.payload }}
         default:
             return state
     }
@@ -68,16 +64,14 @@ export const AppContext = ({children}: StateProps) => {
         })
     }, [state])
 
-
-    const setDroneData = useCallback((telemetry: Telemetry) => {
+    const setPolygons = useCallback((polygon: Polygon) => {
         dispatch({
-            type: 'setDroneData',
-            payload: telemetry
+            type: 'setPolygons',
+            payload: polygon
         })
     }, [state])
 
-
-    const value : ReturnedState = {...state, setMarker, setDroneData}
+    const value : ReturnedState = {...state, setMarker, setPolygons}
 
     return <Provider value={value}>
         {children}
